@@ -1,0 +1,939 @@
+# 40 条黄金样本
+
+## 一、标准场景（24条）
+
+### 1. 初步接触类（8条）
+
+**样本 1**
+原始记录：
+“今天拜访了比亚迪的张经理，第一次见面，主要介绍了我们公司的 Mpilot Highway 方案。他们好像有点兴趣，但没细问。留了资料，说回去看看。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "陈敏",
+  "customer": "比亚迪",
+  "contact_person": "张经理",
+  "visit_time": "2026-06-22 14:00",
+  "topic": "Mpilot Highway 方案介绍",
+  "customer_interest": ["Mpilot Highway 方案"],
+  "key_concerns": [],
+  "competitors_mentioned": [],
+  "next_steps": [],
+  "risk_level": "低",
+  "risk_reason": "初次接触，客户尚未表达明确兴趣或疑虑。",
+  "resources_needed": [],
+  "relationship_suggestion": "定期跟进，等待客户反馈。"
+}
+```
+
+**样本 2**
+原始记录：
+“下午见了吉利的采购李总，聊了聊我们的 Mpilot Parking。他们明确说今年有泊车升级的计划，预算大概在 300 万左右。但李总提了两个问题：一是我们的系统能不能跟他们的域控兼容，二是数据安全怎么保障。我答应周五前发一份技术兼容性说明过去。另外，他们也在接触博世，感觉博世商务关系挺硬。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "王芳",
+  "customer": "吉利汽车",
+  "contact_person": "李总（采购）",
+  "visit_time": "2026-06-23 15:00",
+  "topic": "Mpilot Parking 方案交流",
+  "customer_interest": ["Mpilot Parking"],
+  "key_concerns": ["域控兼容性", "数据安全保障"],
+  "competitors_mentioned": ["博世"],
+  "next_steps": [{"action": "周五前发送技术兼容性说明", "owner": "王芳", "deadline": "2026-06-26"}],
+  "risk_level": "中",
+  "risk_reason": "客户有预算和计划，但疑虑具体，且有竞对博世。",
+  "resources_needed": ["技术团队支持"],
+  "relationship_suggestion": "尽快提供材料，同时侧面了解博世的报价和服务情况。"
+}
+```
+
+**样本 3**
+原始记录：
+“刚从上汽那边回来，见的智驾工程师刘工。他对我们的感知算法很感兴趣，问了很多技术细节，比如在雨雾天的表现。但他也说了，最终决策权在技术总监陈博那里，他只是做初步评估。我约了下周三带我们的算法专家去给陈博做一次演示。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "赵刚",
+  "customer": "上汽集团",
+  "contact_person": "刘工（智驾工程师）",
+  "visit_time": "2026-06-24 10:30",
+  "topic": "感知算法技术交流",
+  "customer_interest": ["感知算法"],
+  "key_concerns": ["雨雾天性能"],
+  "competitors_mentioned": [],
+  "next_steps": [{"action": "下周三带算法专家给技术总监陈博演示", "owner": "赵刚", "deadline": "2026-07-01"}],
+  "risk_level": "低",
+  "risk_reason": "技术兴趣浓厚，但决策链未完全打通。",
+  "resources_needed": ["算法专家支持"],
+  "relationship_suggestion": "维护好刘工关系，通过他了解陈博的关注点。"
+}
+```
+
+**样本 4**
+原始记录：
+“今天去长城汽车，跟王总聊了。他对我们的方案有点兴趣，但没明说。一直问我 Mobileye 的优缺点，感觉在套信息。最后就说保持联系，也没约下次见面。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "孙磊",
+  "customer": "长城汽车",
+  "contact_person": "王总",
+  "visit_time": "2026-06-25 11:00",
+  "topic": "行业方案对比",
+  "customer_interest": [],
+  "key_concerns": [],
+  "competitors_mentioned": ["Mobileye"],
+  "next_steps": [],
+  "risk_level": "中",
+  "risk_reason": "客户未表达自身兴趣，反而在收集竞对信息，可能已有倾向。",
+  "resources_needed": [],
+  "relationship_suggestion": "需进一步摸清王总真实决策角色和倾向。"
+}
+```
+
+**样本 5**
+原始记录：
+“见了蔚来的项目经理小李，年轻，技术范儿。对我们的全栈自研能力很认可，但感觉他上面还有老大没点头。他说内部正在评估，可能会在 Q3 启动一个小规模的 POC。我留了微信，说有任何问题随时找我。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "周洁",
+  "customer": "蔚来汽车",
+  "contact_person": "小李（项目经理）",
+  "visit_time": "2026-06-26 09:00",
+  "topic": "全栈自研方案介绍",
+  "customer_interest": ["全栈自研能力"],
+  "key_concerns": ["内部审批流程"],
+  "competitors_mentioned": [],
+  "next_steps": [],
+  "risk_level": "低",
+  "risk_reason": "客户认可但决策权有限，推进节奏取决于内部。",
+  "resources_needed": [],
+  "relationship_suggestion": "保持日常沟通，提供技术白皮书辅助其内部汇报。"
+}
+```
+
+**样本 6**
+原始记录：
+“拜访了理想汽车的赵总。他们对高速 NOA 很重视，打算明年全系标配。预算可能要到 2000 万以上。但是赵总明确说，他们只考虑成熟方案，要求至少有过 10 万公里以上路测数据。我答应回去整理路测报告，下周一发给他。竞对主要是华为，华为商务攻势很强。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "吴凯",
+  "customer": "理想汽车",
+  "contact_person": "赵总",
+  "visit_time": "2026-06-23 16:00",
+  "topic": "高速 NOA 方案",
+  "customer_interest": ["高速 NOA"],
+  "key_concerns": ["方案成熟度要求高，需10万公里路测数据"],
+  "competitors_mentioned": ["华为"],
+  "next_steps": [{"action": "下周一前发送路测报告", "owner": "吴凯", "deadline": "2026-06-29"}],
+  "risk_level": "高",
+  "risk_reason": "项目体量大，但条件苛刻，竞对华为实力强。",
+  "resources_needed": ["路测数据支持"],
+  "relationship_suggestion": "优先投入资源满足路测要求，并针对华为制定差异化策略。"
+}
+```
+
+**样本 7**
+原始记录：
+“刚去了一趟小鹏，对方是一个技术团队，问得非常细，从域控制器到传感器融合都问了。感觉他们技术能力很强，可能想自研一部分。我有点拿不准他们是真合作还是想参考我们的方案。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "郑涛",
+  "customer": "小鹏汽车",
+  "contact_person": "技术团队",
+  "visit_time": "2026-06-25 14:00",
+  "topic": "技术方案全面交流",
+  "customer_interest": ["域控制器", "传感器融合"],
+  "key_concerns": ["对方自研可能性"],
+  "competitors_mentioned": [],
+  "next_steps": [],
+  "risk_level": "中",
+  "risk_reason": "客户技术能力过强，有自研替代风险。",
+  "resources_needed": [],
+  "relationship_suggestion": "摸清对方自研边界，寻找我方不可替代的价值点。"
+}
+```
+
+**样本 8**
+原始记录：
+“今天见的广汽埃安张总挺好说话，说听过我们，有时间会去试乘试驾一下我们的 demo 车。留了名片，让我联系他们采购部刘经理对接下一步。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "林峰",
+  "customer": "广汽埃安",
+  "contact_person": "张总",
+  "visit_time": "2026-06-24 16:30",
+  "topic": "公司及方案介绍",
+  "customer_interest": ["试乘试驾"],
+  "key_concerns": [],
+  "competitors_mentioned": [],
+  "next_steps": [{"action": "联系采购部刘经理对接", "owner": "林峰", "deadline": null}],
+  "risk_level": "低",
+  "risk_reason": "客户态度友好，下一步明确，无明确阻力。",
+  "resources_needed": [],
+  "relationship_suggestion": "尽快联系刘经理，安排 demo 体验。"
+}
+```
+
+### 2. 深度交流类（8条）
+
+**样本 9**
+原始记录：
+“和陈博（上汽智驾总监）开了两小时技术会议，把他工程师都叫来了。我们一条条过了 Mpilot Parking 的 37 个技术指标，他们很满意。但是陈博提出，我们的感知帧率在夜间会下降 15%，这个必须在下周 POC 之前解决。我记下来了，回去马上拉研发看。竞争对手博世报价比我们低 8%，但技术响应慢，这是个机会。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "李雅",
+  "customer": "上汽集团",
+  "contact_person": "陈博（智驾总监）",
+  "visit_time": "2026-06-23 09:00",
+  "topic": "Mpilot Parking 技术评审",
+  "customer_interest": ["Mpilot Parking"],
+  "key_concerns": ["夜间感知帧率下降15%", "博世报价低8%"],
+  "competitors_mentioned": ["博世"],
+  "next_steps": [{"action": "POC前解决夜间感知帧率问题", "owner": "李雅/研发", "deadline": "2026-06-30"}],
+  "risk_level": "高",
+  "risk_reason": "技术细节瓶颈可能影响 POC 结果，竞对有价格优势。",
+  "resources_needed": ["研发紧急支持"],
+  "relationship_suggestion": "紧盯技术修复，同时强调我方响应速度和定制化优势。"
+}
+```
+
+**样本 10**
+原始记录：
+“跟比亚迪的自动驾驶负责人王博聊得很深。他直接给我们看了他们的传感器配置图，让我们评估 Mpilot Highway 的适配性。他们的需求很特殊，要兼容自研的中间件。我答应明天让系统架构师出个初步方案。王博还透露，他们和 Mobileye 的合作也在谈，但 Mobileye 太封闭，他们不喜欢。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "陈敏",
+  "customer": "比亚迪",
+  "contact_person": "王博（自动驾驶负责人）",
+  "visit_time": "2026-06-24 10:00",
+  "topic": "Mpilot Highway 适配性评估",
+  "customer_interest": ["Mpilot Highway 适配性"],
+  "key_concerns": ["需兼容自研中间件"],
+  "competitors_mentioned": ["Mobileye"],
+  "next_steps": [{"action": "明天提交初步适配方案", "owner": "陈敏/架构师", "deadline": "2026-06-25"}],
+  "risk_level": "中",
+  "risk_reason": "需求定制化高，但竞对 Mobileye 因开放性劣势处于下风。",
+  "resources_needed": ["系统架构师支持"],
+  "relationship_suggestion": "以开放性和服务能力作为主攻点。"
+}
+```
+
+**样本 11**
+原始记录：
+“今天到蔚来跟他们的测试负责人碰了头，拿到了他们 POC 的测试大纲。总共 28 个场景，其中有 5 个是高速施工路段，我们之前没怎么测过。他们要求两周内出测试计划。我初步看了下，有难度但能做。回去得和测试团队商量一下资源。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "周洁",
+  "customer": "蔚来汽车",
+  "contact_person": "测试负责人",
+  "visit_time": "2026-06-22 14:00",
+  "topic": "POC 测试大纲对接",
+  "customer_interest": ["POC 测试"],
+  "key_concerns": ["5个高速施工场景未充分测试"],
+  "competitors_mentioned": [],
+  "next_steps": [{"action": "两周内提交测试计划", "owner": "周洁/测试团队", "deadline": "2026-07-06"}],
+  "risk_level": "中",
+  "risk_reason": "测试场景有挑战，但时间相对充裕。",
+  "resources_needed": ["测试团队资源"],
+  "relationship_suggestion": "优先分析施工场景，提前内测，展现专业性。"
+}
+```
+
+**样本 12**
+原始记录：
+“跟理想的赵总又开了一次会，这次我们把路测报告详细讲了一遍。他们觉得数据不错，但是对极端天气的数据还是有顾虑。赵总提了一个新要求：希望我们在 7 月中旬之前，去他们的测试场跑一次实战 demo，用他们的车。我答应了，这个要协调工程部调一辆验证车过去。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "吴凯",
+  "customer": "理想汽车",
+  "contact_person": "赵总",
+  "visit_time": "2026-06-26 11:00",
+  "topic": "路测报告评审及 demo 计划",
+  "customer_interest": ["高速 NOA 路测数据"],
+  "key_concerns": ["极端天气数据不足", "需用理想自己的车测试"],
+  "competitors_mentioned": [],
+  "next_steps": [{"action": "7月中旬前在理想测试场完成实战demo", "owner": "吴凯/工程部", "deadline": "2026-07-15"}],
+  "risk_level": "中",
+  "risk_reason": "客户要求提高，但方向明确，是积极信号。",
+  "resources_needed": ["验证车辆", "工程部现场支持"],
+  "relationship_suggestion": "全力配合 demo，以此建立深度信任。"
+}
+```
+
+**样本 13**
+原始记录：
+“长城汽车的王总终于松口了，说可以让我们参加他们下个月的供应商技术展。但是展位很小，只有 15 分钟演示时间。我得赶紧跟市场部申请展示物料，还要把演示脚本准备好。这 15 分钟必须一炮打响。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "孙磊",
+  "customer": "长城汽车",
+  "contact_person": "王总",
+  "visit_time": "2026-06-27 09:30",
+  "topic": "供应商技术展参展安排",
+  "customer_interest": ["参加技术展"],
+  "key_concerns": ["演示时间仅15分钟"],
+  "competitors_mentioned": [],
+  "next_steps": [{"action": "申请展示物料并准备演示脚本", "owner": "孙磊/市场部", "deadline": null}],
+  "risk_level": "中",
+  "risk_reason": "机会难得但时间紧，演示效果决定后续走向。",
+  "resources_needed": ["市场部物料", "演示脚本"],
+  "relationship_suggestion": "精心打磨演示内容，突出核心差异点。"
+}
+```
+
+**样本 14**
+原始记录：
+“吉利李总给了我们一个好消息，他们的 CTO 下周要来看我们的 demo。但坏消息是，博世也会在同一天演示。李总暗示我们，CTO 更关注国产化和数据安全。我得赶紧和研发碰一下，把演示重点放在国产化替代方案上。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "王芳",
+  "customer": "吉利汽车",
+  "contact_person": "李总（采购）",
+  "visit_time": "2026-06-25 14:00",
+  "topic": "CTO demo 安排及竞对动态",
+  "customer_interest": ["国产化方案", "数据安全"],
+  "key_concerns": ["与博世同天演示", "CTO 关注点"],
+  "competitors_mentioned": ["博世"],
+  "next_steps": [{"action": "调整演示重点为国产化替代方案", "owner": "王芳/研发", "deadline": null}],
+  "risk_level": "高",
+  "risk_reason": "关键决策人 demo，竞对同场，必须差异化致胜。",
+  "resources_needed": ["研发支持演示调整"],
+  "relationship_suggestion": "利用李总的信息优势，针对性准备。"
+}
+```
+
+**样本 15**
+原始记录：
+“刚从小鹏出来，他们自动驾驶中心的刘博明确说，他们的下一代平台会全部用自研感知，但规控模块可以考虑外采。我们的规控正好是强项。他让我们下周五之前提交一份规控模块的技术规格书和报价。这个要尽快出。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "郑涛",
+  "customer": "小鹏汽车",
+  "contact_person": "刘博（自动驾驶中心）",
+  "visit_time": "2026-06-26 16:00",
+  "topic": "规控模块合作机会",
+  "customer_interest": ["规控模块"],
+  "key_concerns": ["客户自研感知，只需规控"],
+  "competitors_mentioned": [],
+  "next_steps": [{"action": "下周五前提交规控模块技术规格书和报价", "owner": "郑涛", "deadline": "2026-07-03"}],
+  "risk_level": "低",
+  "risk_reason": "需求明确且我方有优势，路径清晰。",
+  "resources_needed": ["技术规格书", "报价支持"],
+  "relationship_suggestion": "快速响应，凸显规控模块性能指标。"
+}
+```
+
+**样本 16**
+原始记录：
+“跟广汽埃安的工程师们开了一整天workshop，效果很好。他们当场表示，我们的方案是他们目前见过最完整的。但是采购部那边好像有不同意见，听说是跟另一家供应商关系很深。我得去摸摸采购那边的底。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "林峰",
+  "customer": "广汽埃安",
+  "contact_person": "工程师团队",
+  "visit_time": "2026-06-28 09:00",
+  "topic": "技术 Workshop",
+  "customer_interest": ["全栈方案"],
+  "key_concerns": ["采购部可能有其他供应商关系"],
+  "competitors_mentioned": [],
+  "next_steps": [{"action": "摸清采购部关系和顾虑", "owner": "林峰", "deadline": null}],
+  "risk_level": "中",
+  "risk_reason": "技术层面认可，但商务层面存在未知阻力。",
+  "resources_needed": [],
+  "relationship_suggestion": "尽快建立采购部联系，了解真实决策链。"
+}
+```
+
+### 3. 商务谈判类（4条）
+
+**样本 17**
+原始记录：
+“和吉利采购李总正式开始谈价格了。我们报 450 万，李总直接砍到 300 万，说博世可以给到这个价。我知道博世大概在 350 万左右，所以我坚持 400 万是底线，但李总不松口。最后说再考虑考虑。我有点虚，怕这单要黄。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "王芳",
+  "customer": "吉利汽车",
+  "contact_person": "李总（采购）",
+  "visit_time": "2026-06-29 14:00",
+  "topic": "商务价格谈判",
+  "customer_interest": [],
+  "key_concerns": ["价格分歧大：我方450万 vs 客户300万"],
+  "competitors_mentioned": ["博世（报价约350万）"],
+  "next_steps": [],
+  "risk_level": "高",
+  "risk_reason": "价格僵持，竞对有价格优势，无下一步承诺。",
+  "resources_needed": [],
+  "relationship_suggestion": "需要内部讨论是否调整价格策略，或寻找非价格让步空间。"
+}
+```
+
+**样本 18**
+原始记录：
+“比亚迪王博说预算批下来了，800 万，比我们预期少 100 万。但他们要求不降功能，还得加一个额外的影子模式。我算了算，成本可能兜不住。回去得和财务重新核算，看能不能通过其他方式比如分期交付来达成一致。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "陈敏",
+  "customer": "比亚迪",
+  "contact_person": "王博（自动驾驶负责人）",
+  "visit_time": "2026-06-30 10:00",
+  "topic": "预算与需求匹配",
+  "customer_interest": ["影子模式"],
+  "key_concerns": ["预算800万，需增加影子模式", "成本可能超支"],
+  "competitors_mentioned": [],
+  "next_steps": [{"action": "财务重新核算成本，探索分期交付方案", "owner": "陈敏/财务", "deadline": null}],
+  "risk_level": "中",
+  "risk_reason": "有预算但功能需求超出，需要商业创新。",
+  "resources_needed": ["财务核算", "产品方案支持"],
+  "relationship_suggestion": "提出建设性替代方案，避免直接拒绝。"
+}
+```
+
+**样本 19**
+原始记录：
+“理想赵总催我们签合同了，但他们法务加了一条‘如因我方原因导致交付延迟，每日罚款合同总额的0.1%’。这条我们一般是不接受的。我让法务去审，但赵总说这是他们标准条款，不能改。僵在这里了。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "吴凯",
+  "customer": "理想汽车",
+  "contact_person": "赵总",
+  "visit_time": "2026-07-01 11:00",
+  "topic": "合同条款谈判",
+  "customer_interest": [],
+  "key_concerns": ["客户坚持延迟交付罚款条款", "我方通常不接受此条款"],
+  "competitors_mentioned": [],
+  "next_steps": [{"action": "法务审核条款", "owner": "吴凯/法务", "deadline": null}],
+  "risk_level": "高",
+  "risk_reason": "合同条款分歧可能导致签约延迟或失败。",
+  "resources_needed": ["法务支持"],
+  "relationship_suggestion": "寻找双方都能接受的条款折中方案。"
+}
+```
+
+**样本 20**
+原始记录：
+“上汽陈博终于点头了，说可以签框架协议，但要求我们先垫付前期的适配费，大概 50 万。这在行业里倒不罕见，但公司最近现金流有点紧。我回去要跟财务总监商量一下，看能不能特批。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "李雅",
+  "customer": "上汽集团",
+  "contact_person": "陈博（智驾总监）",
+  "visit_time": "2026-07-02 14:00",
+  "topic": "框架协议及商务条件",
+  "customer_interest": [],
+  "key_concerns": ["需垫付50万前期适配费", "公司现金流紧张"],
+  "competitors_mentioned": [],
+  "next_steps": [{"action": "与财务总监沟通特批垫付", "owner": "李雅/财务总监", "deadline": null}],
+  "risk_level": "中",
+  "risk_reason": "合作意向明确，但资金条件需内部协调。",
+  "resources_needed": ["财务特批"],
+  "relationship_suggestion": "尽快内部协调，展现合作诚意。"
+}
+```
+
+### 4. 客诉/维护类（4条）
+
+**样本 21**
+原始记录：
+“滴滴的王队刚打电话过来，说上周装的工程版软件今天在高架上又一次幽灵刹车，差点被追尾。他们现在非常生气，要求我们明天就派人去现场排查，并且要出一个正式的事故分析报告，否则要停测。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "赵岩",
+  "customer": "滴滴自动驾驶",
+  "contact_person": "王队（安全员）",
+  "visit_time": "2026-07-01 16:00",
+  "topic": "幽灵刹车客诉处理",
+  "customer_interest": [],
+  "key_concerns": ["幽灵刹车再次发生", "差点追尾", "威胁停测"],
+  "competitors_mentioned": [],
+  "next_steps": [{"action": "明天派人现场排查", "owner": "赵岩/售后", "deadline": "2026-07-02"}, {"action": "出具正式事故分析报告", "owner": "赵岩/研发", "deadline": null}],
+  "risk_level": "高",
+  "risk_reason": "严重安全问题，客户情绪激动，可能影响合作。",
+  "resources_needed": ["售后现场支持", "研发分析"],
+  "relationship_suggestion": "立即响应，高层介入安抚，透明化处理过程。"
+}
+```
+
+**样本 22**
+原始记录：
+“上汽的陈博发微信说，昨天 demo 的时候，我们的系统在停车场入口识别失败，直接退出了。虽然只是个 demo，但他觉得这反映了软件的健壮性不足。我们得赶紧查一下 log，看是什么原因，24 小时内给他一个解释。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "李雅",
+  "customer": "上汽集团",
+  "contact_person": "陈博（智驾总监）",
+  "visit_time": "2026-07-02 09:00",
+  "topic": "Demo 故障反馈",
+  "customer_interest": [],
+  "key_concerns": ["停车场入口识别失败导致退出", "反映软件健壮性"],
+  "competitors_mentioned": [],
+  "next_steps": [{"action": "24小时内分析日志并给出解释", "owner": "李雅/研发", "deadline": "2026-07-03"}],
+  "risk_level": "中",
+  "risk_reason": "技术故障影响信心，但非生产环境，可挽回。",
+  "resources_needed": ["研发日志分析"],
+  "relationship_suggestion": "快速、诚实地回应，给出改进计划。"
+}
+```
+
+**样本 23**
+原始记录：
+“广汽的刘经理说，我们的第一版交付的代码里有个 bug，在雨天误报了三次故障码，导致他们的测试暂停了半天。虽然我们自己测没发现，但人家很不爽。我道了歉，答应本周内出一个补丁。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "林峰",
+  "customer": "广汽埃安",
+  "contact_person": "刘经理（采购/测试）",
+  "visit_time": "2026-07-03 10:00",
+  "topic": "交付代码 Bug 投诉",
+  "customer_interest": [],
+  "key_concerns": ["雨天误报故障码导致测试暂停"],
+  "competitors_mentioned": [],
+  "next_steps": [{"action": "本周内发布补丁", "owner": "林峰/研发", "deadline": "2026-07-10"}],
+  "risk_level": "低",
+  "risk_reason": "问题明确，修复可控，客户目前接受道歉。",
+  "resources_needed": ["研发修复补丁"],
+  "relationship_suggestion": "补丁后主动回访，赠送一次额外测试支持。"
+}
+```
+
+**样本 24**
+原始记录：
+“蔚来小李说他们内部安全审计发现了我们代码里用了两个 GPL 协议的开源库，这不符合他们的合规要求。他们很不高兴，觉得我们没有提前告知。我赶紧查了一下，确实是我们不小心引入的。马上联系了法务，看怎么处理这个合规问题。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "周洁",
+  "customer": "蔚来汽车",
+  "contact_person": "小李（项目经理）",
+  "visit_time": "2026-07-04 11:00",
+  "topic": "合规性问题",
+  "customer_interest": [],
+  "key_concerns": ["代码含GPL协议开源库", "客户合规要求"],
+  "competitors_mentioned": [],
+  "next_steps": [{"action": "联系法务处理合规问题", "owner": "周洁/法务", "deadline": null}],
+  "risk_level": "高",
+  "risk_reason": "合规风险直接影响合作，可能涉及合同违约。",
+  "resources_needed": ["法务支持", "代码替换方案"],
+  "relationship_suggestion": "主动承认错误，尽快提供整改方案和时间表。"
+}
+```
+
+## 二、边界场景（8条）
+
+**样本 25（信息缺失：无下一步）**
+原始记录：
+“今天见了长安汽车的李工，聊了大概半小时。他问了一些功能安全的问题，我回答了。然后他说今天就到这儿，以后再说。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "马超",
+  "customer": "长安汽车",
+  "contact_person": "李工",
+  "visit_time": "2026-07-05 15:00",
+  "topic": "功能安全交流",
+  "customer_interest": [],
+  "key_concerns": ["功能安全"],
+  "competitors_mentioned": [],
+  "next_steps": [],
+  "risk_level": "低",
+  "risk_reason": "交流浅，无明确后续。",
+  "resources_needed": [],
+  "relationship_suggestion": "定期轻量跟进。"
+}
+```
+
+**样本 26（信息缺失：联系人未说明角色）**
+原始记录：
+“去了一趟东风，见了小刘，聊得还行。留了电话，说下次带我去见他们领导。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "黄浩",
+  "customer": "东风汽车",
+  "contact_person": "小刘",
+  "visit_time": "2026-07-06 10:00",
+  "topic": "初步接触",
+  "customer_interest": [],
+  "key_concerns": [],
+  "competitors_mentioned": [],
+  "next_steps": [{"action": "下次会见领导", "owner": "黄浩/小刘", "deadline": null}],
+  "risk_level": "低",
+  "risk_reason": "初期接触，无明确信息。",
+  "resources_needed": [],
+  "relationship_suggestion": "保持联系，促成更高层级会面。"
+}
+```
+
+**样本 27（边界：多个竞争对手一次提及）**
+原始记录：
+“一汽的徐总跟我们聊完，直接说，你们和博世、大陆、地平线比，核心优势到底在哪里？我被问住了，赶紧说了我们的全栈能力。但回去得好好准备一份竞对对比表。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "高远",
+  "customer": "一汽集团",
+  "contact_person": "徐总",
+  "visit_time": "2026-07-07 14:00",
+  "topic": "竞争优势阐述",
+  "customer_interest": [],
+  "key_concerns": ["与博世、大陆、地平线的差异优势"],
+  "competitors_mentioned": ["博世", "大陆", "地平线"],
+  "next_steps": [{"action": "准备竞对对比表", "owner": "高远", "deadline": null}],
+  "risk_level": "中",
+  "risk_reason": "客户对比多家，我方需清晰差异化。",
+  "resources_needed": ["竞对分析支持"],
+  "relationship_suggestion": "尽快输出专业对比，强化全栈优势。"
+}
+```
+
+**样本 28（边界：时间模糊）**
+原始记录：
+“奇瑞的方总说下个月初有个内部评审会，如果我们能在那之前把技术方案书和报价给他，他可以帮我们推进。下个月初……我得确认一下具体日期。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "宋阳",
+  "customer": "奇瑞汽车",
+  "contact_person": "方总",
+  "visit_time": "2026-07-08 16:00",
+  "topic": "评审会推进",
+  "customer_interest": [],
+  "key_concerns": [],
+  "competitors_mentioned": [],
+  "next_steps": [{"action": "在内部评审会前提交技术方案书和报价", "owner": "宋阳", "deadline": null}],
+  "risk_level": "低",
+  "risk_reason": "客户给予明确路径，但时间模糊需澄清。",
+  "resources_needed": ["技术方案", "报价"],
+  "relationship_suggestion": "立即与方总确认具体日期，并按时提交。"
+}
+```
+
+**样本 29（边界：预算信息含混）**
+原始记录：
+“江淮的孙经理说他们明年有预算，但具体多少没定，得看集团批多少。不过他对我们的方案挺认可的，说会尽量帮我们争取。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "贺文",
+  "customer": "江淮汽车",
+  "contact_person": "孙经理",
+  "visit_time": "2026-07-09 09:30",
+  "topic": "预算与方案认可",
+  "customer_interest": ["方案认可"],
+  "key_concerns": ["预算未定"],
+  "competitors_mentioned": [],
+  "next_steps": [],
+  "risk_level": "低",
+  "risk_reason": "有倾向但预算不确定，需长期培育。",
+  "resources_needed": [],
+  "relationship_suggestion": "辅助孙经理内部争取预算，提供价值支撑材料。"
+}
+```
+
+**样本 30（边界：情绪化表达但无实质内容）**
+原始记录：
+“今天见的这客户，从头到尾就在吐槽，说我们同行多么不靠谱，方案都是吹的。我全程陪笑脸，最后连个名片都没拿到。这趟白跑了。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "罗强",
+  "customer": "未知",
+  "contact_person": "未知",
+  "visit_time": "2026-07-10 11:00",
+  "topic": "无效拜访",
+  "customer_interest": [],
+  "key_concerns": [],
+  "competitors_mentioned": [],
+  "next_steps": [],
+  "risk_level": "低",
+  "risk_reason": "无实质信息，无法评估。",
+  "resources_needed": [],
+  "relationship_suggestion": "标记无效，后续无需跟进。"
+}
+```
+
+**样本 31（边界：信息全部在上下文隐含）**
+原始记录：
+“老地方，老时间，还是那个问题。烦死了。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "未知",
+  "customer": "未知",
+  "contact_person": "未知",
+  "visit_time": "未知",
+  "topic": "未知",
+  "customer_interest": [],
+  "key_concerns": ["存在反复出现的问题"],
+  "competitors_mentioned": [],
+  "next_steps": [],
+  "risk_level": "中",
+  "risk_reason": "信息极度缺失，但暗示有持续未解决的问题，需人工澄清。",
+  "resources_needed": [],
+  "relationship_suggestion": "立即与销售确认具体上下文。"
+}
+```
+
+**样本 32（边界：日期推理）**
+原始记录：
+“今天是周三，客户让我大后天之前把报价发过去。我得赶紧了。”
+
+金标 JSON：（假设给定拜访日期为 2026-07-15 周三）
+
+```json
+{
+  "sales_name": "未知",
+  "customer": "未知",
+  "contact_person": "未知",
+  "visit_time": "2026-07-15",
+  "topic": "报价提交",
+  "customer_interest": [],
+  "key_concerns": [],
+  "competitors_mentioned": [],
+  "next_steps": [{"action": "大后天前发送报价", "owner": "销售", "deadline": "2026-07-18"}],
+  "risk_level": "低",
+  "risk_reason": "仅报价任务，无风险迹象。",
+  "resources_needed": [],
+  "relationship_suggestion": "无"
+}
+```
+
+## 三、对抗场景（8条）
+
+**样本 33（噪声：全篇废话，关键信息少）**
+原始记录：
+“今天嘛，天气不错，去了客户那里，他们楼下的咖啡不错，我喝了两杯。哦对了，他们说方案还行，但还要再看看。其他没了，出来的时候还下雨了。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "未知",
+  "customer": "未知",
+  "contact_person": "未知",
+  "visit_time": null,
+  "topic": "方案反馈",
+  "customer_interest": [],
+  "key_concerns": [],
+  "competitors_mentioned": [],
+  "next_steps": [],
+  "risk_level": "低",
+  "risk_reason": "有效信息极少，无法判断。",
+  "resources_needed": [],
+  "relationship_suggestion": "无"
+}
+```
+
+**样本 34（对抗：情绪激动，脏话/夸张）**
+原始记录：
+“我X，今天被客户骂了个狗血淋头。他们那个技术总监就是个傻X，说我们的算法就是垃圾，连他们实习生写的都不如。我忍着没怼回去，但真的气炸了。最后他们说要重新评估所有供应商，感觉我们要凉凉。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "未知",
+  "customer": "未知",
+  "contact_person": "技术总监",
+  "visit_time": null,
+  "topic": "客户投诉/重新评估",
+  "customer_interest": [],
+  "key_concerns": ["客户认为算法质量低下", "重新评估所有供应商"],
+  "competitors_mentioned": [],
+  "next_steps": [],
+  "risk_level": "高",
+  "risk_reason": "客户严重不满，可能被淘汰。",
+  "resources_needed": [],
+  "relationship_suggestion": "高层紧急介入，了解具体问题并安抚。"
+}
+```
+
+**样本 35（对抗：同音词干扰）**
+原始记录：
+“客户问我们能不能做到‘地坪线’的精度。我愣了一下，后来反应过来是‘地平线’那个公司吧？他们最近在苏州有一个 demo 效果很好，客户拿那个来压我们。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "未知",
+  "customer": "未知",
+  "contact_person": "未知",
+  "visit_time": null,
+  "topic": "竞对比照",
+  "customer_interest": [],
+  "key_concerns": ["客户以地平线demo效果为基准"],
+  "competitors_mentioned": ["地平线"],
+  "next_steps": [],
+  "risk_level": "中",
+  "risk_reason": "竞对 demo 效果突出，对我方形成压力。",
+  "resources_needed": [],
+  "relationship_suggestion": "获取地平线 demo 信息，寻找反制点。"
+}
+```
+
+**样本 36（对抗：时间推理复杂）**
+原始记录：
+“客户说：‘我们下下周二的内部评审，你们最好提前三个工作日给材料。’ 我算算……今天是周四，下下周二……提前三天……那应该是下周五之前给。我得记下来。”
+
+金标 JSON：（给定拜访日期 2026-07-09 周四）
+- “下下周二” = 2026-07-21
+- 提前三个工作日 = 2026-07-16（周四）
+
+```json
+{
+  "sales_name": "未知",
+  "customer": "未知",
+  "contact_person": "未知",
+  "visit_time": "2026-07-09",
+  "topic": "评审材料提交",
+  "customer_interest": [],
+  "key_concerns": [],
+  "competitors_mentioned": [],
+  "next_steps": [{"action": "下周五前提交评审材料", "owner": "销售", "deadline": "2026-07-16"}],
+  "risk_level": "低",
+  "risk_reason": "任务明确，时间可推理。",
+  "resources_needed": [],
+  "relationship_suggestion": "无"
+}
+```
+
+**样本 37（对抗：否定式表达）**
+原始记录：
+“客户没有说不感兴趣，但也没有说感兴趣。反正就是模棱两可，我猜他们可能在等另一个供应商的结果。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "未知",
+  "customer": "未知",
+  "contact_person": "未知",
+  "visit_time": null,
+  "topic": "状态跟进",
+  "customer_interest": [],
+  "key_concerns": ["客户态度模糊，可能在对比其他供应商"],
+  "competitors_mentioned": [],
+  "next_steps": [],
+  "risk_level": "中",
+  "risk_reason": "客户观望，存在未知竞争者。",
+  "resources_needed": [],
+  "relationship_suggestion": "主动制造差异化优势，打破观望。"
+}
+```
+
+**样本 38（对抗：长数字序列干扰）**
+原始记录：
+“他们的需求书编号是 QZ-2026-0789-AS，要求满足 GB/T 34567-2026 标准。我们的方案编号是 MP-v3.2.1-beta，不知道能不能对上。他们还提了个要求，电源纹波要小于 50mV，我们目前是 55mV。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "未知",
+  "customer": "未知",
+  "contact_person": "未知",
+  "visit_time": null,
+  "topic": "需求匹配分析",
+  "customer_interest": [],
+  "key_concerns": ["电源纹波55mV vs 要求<50mV", "标准GB/T 34567-2026"],
+  "competitors_mentioned": [],
+  "next_steps": [],
+  "risk_level": "中",
+  "risk_reason": "技术指标有差距，需评估改进可能性。",
+  "resources_needed": ["技术评估"],
+  "relationship_suggestion": "评估指标差距是否可以快速弥补。"
+}
+```
+
+**样本 39（对抗：大量反问句）**
+原始记录：
+“客户一直在问：你们凭啥觉得你们能行？你们有大规模量产经验吗？你们的算法过车规了吗？你们敢签对赌吗？我感觉这不是交流，是审问。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "未知",
+  "customer": "未知",
+  "contact_person": "未知",
+  "visit_time": null,
+  "topic": "客户质疑",
+  "customer_interest": [],
+  "key_concerns": ["缺少量产经验", "车规认证", "对赌协议"],
+  "competitors_mentioned": [],
+  "next_steps": [],
+  "risk_level": "高",
+  "risk_reason": "客户信任度极低，要求苛刻。",
+  "resources_needed": [],
+  "relationship_suggestion": "准备详实证明材料，争取下一次正式答辩机会。"
+}
+```
+
+**样本 40（对抗：多语言混杂）**
+原始记录：
+“客户是合资公司，会议中英夹杂。CTO 说：We need a robust solution, especially for corner cases。我们的总监回了：我们的 algorithm 已经过了 10 million km 的 simulation。会后客户说 let's keep in touch。”
+
+金标 JSON：
+```json
+{
+  "sales_name": "未知",
+  "customer": "未知（合资公司）",
+  "contact_person": "CTO",
+  "visit_time": null,
+  "topic": "技术方案交流",
+  "customer_interest": [],
+  "key_concerns": ["corner cases 鲁棒性"],
+  "competitors_mentioned": [],
+  "next_steps": [],
+  "risk_level": "低",
+  "risk_reason": "交流礼貌但无实质承诺。",
+  "resources_needed": [],
+  "relationship_suggestion": "后续跟进，提供 corner case 测试报告。"
+}
+```

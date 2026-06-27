@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>销售拜访 AI 分析系统</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Microsoft YaHei', sans-serif; background: #f0f2f5; color: #1a1a1a; min-height: 100vh; }
+.header { background: linear-gradient(135deg, #1a56db 0%, #7c3aed 100%); color: white; padding: 24px 0; text-align: center; }
+.header h1 { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; }
+.header p { font-size: 14px; opacity: 0.85; margin-top: 4px; }
+.container { max-width: 720px; margin: 32px auto; padding: 0 20px; }
+
+.card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 28px; margin-bottom: 20px; }
+.card-title { font-size: 16px; font-weight: 600; color: #1a1a1a; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.card-title .icon { width: 22px; height: 22px; background: #eef2ff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #1a56db; }
+
+.form-group { margin-bottom: 18px; }
+label { font-size: 13px; font-weight: 600; color: #374151; display: block; margin-bottom: 6px; }
+input[type="text"], textarea { width: 100%; padding: 11px 14px; border: 1.5px solid #d1d5db; border-radius: 8px; font-size: 14px; transition: border-color 0.2s; background: #fafafa; }
+textarea { min-height: 160px; resize: vertical; line-height: 1.6; font-family: inherit; }
+input[type="text"]:focus, textarea:focus { outline: none; border-color: #1a56db; background: white; box-shadow: 0 0 0 3px rgba(26,86,219,0.08); }
+
+.btn-row { display: flex; gap: 12px; margin-top: 20px; }
+.btn { flex: 1; padding: 12px 20px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; text-align: center; }
+.btn-primary { background: #1a56db; color: white; }
+.btn-primary:hover { background: #1544b0; }
+.btn-secondary { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+.btn-secondary:hover { background: #e5e7eb; }
+
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+.stat-card { background: white; border-radius: 10px; padding: 16px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.stat-num { font-size: 24px; font-weight: 700; color: #1a56db; }
+.stat-label { font-size: 12px; color: #6b7280; margin-top: 2px; }
+
+.result-card { border-left: 4px solid #1a56db; margin-top: 20px; display: none; }
+.result-card.show { display: block; }
+.field-grid { display: grid; grid-template-columns: 100px 1fr; gap: 6px 16px; font-size: 13px; }
+.field-label { color: #6b7280; font-size: 12px; font-weight: 500; }
+.field-value { color: #1a1a1a; font-weight: 500; }
+.field-value.risk-high { color: #dc2626; font-weight: 700; }
+.field-value.risk-mid { color: #d97706; font-weight: 700; }
+.field-value.risk-low { color: #059669; font-weight: 700; }
+
+.section-divider { height: 1px; background: #e5e7eb; margin: 14px 0; }
+.section-title { font-size: 12px; font-weight: 700; color: #6b7280; margin-bottom: 6px; }
+
+.tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 500; }
+.tag.concern { background: #fef3c7; color: #92400e; }
+.tag.competitor { background: #fce7f3; color: #be185d; }
+.tag.step { background: #eff6ff; color: #1d4ed8; }
+
+.action-buttons { display: flex; gap: 10px; margin-top: 20px; }
+.btn-confirm { background: #059669; color: white; }
+.btn-confirm:hover { background: #047857; }
+.btn-modify { background: #f59e0b; color: white; }
+.btn-modify:hover { background: #d97706; }
+.btn-cancel { background: #ef4444; color: white; }
+.btn-cancel:hover { background: #dc2626; }
+
+.success-msg { background: #d1fae5; border: 1px solid #a7f3d0; color: #065f46; padding: 16px; border-radius: 8px; text-align: center; margin-bottom: 16px; display: none; }
+.success-msg.show { display: block; }
+
+.info-box { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-top: 16px; font-size: 13px; color: #374151; line-height: 1.8; }
+.info-box strong { color: #1a56db; }
+
+.footer { text-align: center; padding: 24px; color: #9ca3af; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+<h1>销售拜访 AI 分析系统</h1>
+<p>输入拜访记录 &raquo; AI 智能提取 &raquo; 人工确认 &raquo; 写入表格</p>
+</div>
+
+<div class="container">
+
+<!-- 统计 -->
+<div class="stats-row">
+<div class="stat-card"><div class="stat-num">7</div><div class="stat-label">已入库记录</div></div>
+<div class="stat-card"><div class="stat-num">0</div><div class="stat-label">待确认</div></div>
+<div class="stat-card"><div class="stat-num">3</div><div class="stat-label">客户数</div></div>
+</div>
+
+<!-- 输入表单 -->
+<div class="card">
+<div class="card-title"><span class="icon">1</span>新建拜访记录</div>
+<form id="demo-form" onsubmit="handleSubmit(event)">
+<div class="form-group">
+<label>销售姓名</label>
+<input type="text" placeholder="例如：张伟" value="张伟">
+</div>
+<div class="form-group">
+<label>客户名称</label>
+<input type="text" placeholder="例如：长城汽车" value="长城汽车">
+</div>
+<div class="form-group">
+<label>拜访记录（粘贴文本或上传文件）</label>
+<textarea placeholder="在此粘贴拜访记录...">今天拜访了长城汽车技术中心王总（项目经理），讨论了Mpilot Highway方案的技术落地。客户对方案的实时性有顾虑，认为系统延迟偏高。同时提到竞对华为MDC方案已经在某车型上量产，价格比我们低15%。下一步需要协调算法团队优化延迟，下周安排技术PK演示。</textarea>
+</div>
+<div class="btn-row">
+<button type="submit" class="btn btn-primary">AI 智能分析</button>
+<button type="button" class="btn btn-secondary" onclick="reset()">查看所有记录</button>
+</div>
+</form>
+</div>
+
+<!-- AI 提取结果卡片（演示用） -->
+<div class="card result-card" id="result-card">
+<div class="card-title"><span class="icon">2</span>AI 提取信息 <span style="font-size:12px;color:#9ca3af;font-weight:400;margin-left:auto;">模型: DeepSeek</span></div>
+
+<div class="field-grid">
+<div class="field-label">销售</div><div class="field-value">张伟</div>
+<div class="field-label">客户</div><div class="field-value">长城汽车</div>
+<div class="field-label">联系人</div><div class="field-value">王总（项目经理）</div>
+<div class="field-label">拜访时间</div><div class="field-value">2026-06-27</div>
+<div class="field-label">核心议题</div><div class="field-value">Mpilot Highway方案技术落地讨论</div>
+</div>
+
+<div class="section-divider"></div>
+<div class="section-title">风险评估</div>
+<div class="field-grid">
+<div class="field-label">风险等级</div><div class="field-value risk-high">高</div>
+<div class="field-label">风险原因</div><div class="field-value">客户对延迟不满 + 竞对华为MDC已量产且价格低15%</div>
+</div>
+
+<div class="section-divider"></div>
+<div class="section-title">关键疑虑</div>
+<div class="tag-list">
+<span class="tag concern">系统延迟偏高</span>
+<span class="tag concern">实时性不足</span>
+</div>
+
+<div class="section-divider"></div>
+<div class="section-title">竞对动态</div>
+<div class="tag-list">
+<span class="tag competitor">华为MDC已量产</span>
+<span class="tag competitor">竞对价格低15%</span>
+</div>
+
+<div class="section-divider"></div>
+<div class="section-title">下一步行动</div>
+<div style="font-size:13px;color:#374151;line-height:1.8;">
+&bull; 协调算法团队优化系统延迟 <small style="color:#6b7280">（截止：下周五）</small> <small style="color:#9ca3af">[技术团队]</small><br>
+&bull; 安排技术PK演示 <small style="color:#6b7280">（截止：下周三）</small> <small style="color:#9ca3af">[张伟]</small>
+</div>
+
+<!-- 确认/修改/取消 按钮 -->
+<div class="action-buttons">
+<button class="btn btn-confirm" onclick="handleConfirm()">确认入库</button>
+<button class="btn btn-modify" onclick="alert('修改面板：可逐字段编辑AI提取结果')">修改</button>
+<button class="btn btn-cancel" onclick="handleCancel()">取消</button>
+</div>
+</div>
+
+<!-- 成功提示 -->
+<div class="success-msg" id="success-msg">
+<strong>入库成功！</strong> 记录已写入表格，飞书已发送通知，AI审核日志已记录。<br>
+<a href="#" style="color:#059669;" onclick="reset();return false">新建记录</a>
+</div>
+
+<!-- 修复说明 -->
+<div class="info-box">
+<strong>v1.1 修复说明（2026-06-27）</strong><br>
+1. <strong>流程修复：</strong>providers 改为 ["deepseek", "qwen"]，DeepSeek 优先，Qwen 兜底<br>
+2. <strong>字段修复：</strong>所有字典访问改用 .get()，兼容 competitors 和 competitors_mentioned<br>
+3. <strong>界面中文化：</strong>全部页面、按钮、提示翻译为中文<br>
+4. <strong>飞书卡片中文化：</strong>卡片标题「销售拜访记录已生成」，字段全中文<br>
+5. <strong>确认流程：</strong>Web 页面内按钮确认 → 写入 CSV → 飞书通知 → 审计日志 → 记忆库更新
+</div>
+
+</div>
+
+<div class="footer">销售拜访 AI 分析系统 v1.1 | DeepSeek + Qwen Fallback 双模型链</div>
+
+<script>
+function handleSubmit(e) {
+e.preventDefault();
+var card = document.getElementById('result-card');
+var msg = document.getElementById('success-msg');
+card.classList.add('show');
+msg.classList.remove('show');
+card.scrollIntoView({ behavior: 'smooth' });
+}
+function handleConfirm() {
+var card = document.getElementById('result-card');
+var msg = document.getElementById('success-msg');
+card.style.opacity = '0.6';
+msg.classList.add('show');
+msg.scrollIntoView({ behavior: 'smooth' });
+}
+function handleCancel() {
+var card = document.getElementById('result-card');
+if (confirm('确定要取消这条记录吗？')) {
+card.classList.remove('show');
+}
+}
+function reset() {
+document.getElementById('result-card').classList.remove('show');
+document.getElementById('result-card').style.opacity = '1';
+document.getElementById('success-msg').classList.remove('show');
+window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
