@@ -1088,8 +1088,15 @@ def api_analyze():
                         rid = str(uuid.uuid4())[:8]
                         ext = result.extracted
                         field_conf = result.confidence or {}
-                        non_zero = [float(v) for v in field_conf.values() if float(v) > 0]
-                        overall_conf = sum(non_zero) / len(non_zero) if non_zero else 0
+                        # Only average extraction-reliant fields for batch mode
+                        extract_fields = ["contact_person","visit_time","topic","key_concerns",
+                                         "competitors_mentioned","next_steps","risk_level","risk_reason"]
+                        extract_scores = [float(v) for f in extract_fields for k,v in field_conf.items() 
+                                         if k == f and float(v) > 0]
+                        if not extract_scores:
+                            extract_scores = [float(v) for v in field_conf.values() if float(v) > 0]
+                        overall_conf = sum(extract_scores) / len(extract_scores) if extract_scores else 0
+                        has_substance = len(sub_transcript) >= 25
 
                         rec_data = {
                             "sales_name": sub_sales,
@@ -1105,7 +1112,7 @@ def api_analyze():
                             "confirmed": False,
                         }
 
-                        if overall_conf > 0.85 and result.passed:
+                        if overall_conf > 0.85 and result.passed and has_substance:
                             rec_data["confirmed"] = True
                             try:
                                 _handle_confirm(rec_data, rid)
@@ -1201,6 +1208,38 @@ def api_analyze():
             if val is not None:
                 extracted[our_field] = val
 
+        # Fix common LLM extraction errors: fields sometimes get swapped
+        import re as _re
+
+        def _is_likely_date(val):
+            return bool(val and _re.match(r'^\d{4}-\d{2}-\d{2}', str(val)))
+
+        def _is_likely_topic(val):
+            """True if val looks like a topic (Chinese text, not a date)"""
+            s = str(val).strip()
+            return bool(s and s not in ("未知","null","None","") and not _is_likely_date(s)
+                       and _re.search(r'[\u4e00-\u9fff]', s))
+
+        topic_val = str(extracted.get("topic", ""))
+        visit_val = str(extracted.get("visit_time", ""))
+
+        # Case 1: topic contains a date prefix → move to visit_time
+        date_match = _re.match(r'^(\d{4}-\d{2}-\d{2})', topic_val)
+        if date_match and not _is_likely_date(visit_val):
+            extracted["visit_time"] = date_match.group(1)
+            cleaned = topic_val[date_match.end():].strip()
+            extracted["topic"] = cleaned if cleaned else "未知"
+
+        # Case 2: visit_time is actually the topic (LLM swapped them)
+        if _is_likely_topic(visit_val) and not _is_likely_topic(topic_val):
+            extracted["topic"] = visit_val
+            extracted["visit_time"] = datetime.now().strftime("%Y-%m-%d")
+
+        # Case 3: visit_time still empty → fill today
+        final_visit = str(extracted.get("visit_time", ""))
+        if not final_visit or final_visit in ("未知", "null", "None", ""):
+            extracted["visit_time"] = datetime.now().strftime("%Y-%m-%d")
+
         # Generate unique record ID
         record_id = uuid.uuid4().hex[:12]
 
@@ -1220,17 +1259,22 @@ def api_analyze():
         }
 
         # ---- Confidence-based auto-confirmation ----
-        # Compute overall confidence from field-level scores
-        # Only average fields that were actually extracted (non-zero confidence)
+        # Average only extraction-reliant fields that have non-zero confidence
         field_conf = result.confidence or {}
-        non_zero = [float(v) for v in field_conf.values() if float(v) > 0]
-        if non_zero:
-            overall_conf = sum(non_zero) / len(non_zero)
-        else:
-            overall_conf = 0.0
+        extract_fields = ["contact_person","visit_time","topic","key_concerns",
+                         "competitors_mentioned","next_steps","risk_level","risk_reason"]
+        extract_scores = [float(v) for f in extract_fields for k,v in field_conf.items() 
+                         if k == f and float(v) > 0]
+        if not extract_scores:
+            extract_scores = [float(v) for v in field_conf.values() if float(v) > 0]
+        overall_conf = sum(extract_scores) / len(extract_scores) if extract_scores else 0
 
+        # Additional safety checks
         auto_confirmed = False
-        if overall_conf > 0.85 and result.passed:
+        transcript_len = len(transcript)
+        has_substance = transcript_len >= 25  # minimum meaningful length
+
+        if overall_conf > 0.85 and result.passed and has_substance:
             # High confidence + all checks passed → auto-confirm
             auto_confirmed = True
             pending_records[record_id]["confirmed"] = True

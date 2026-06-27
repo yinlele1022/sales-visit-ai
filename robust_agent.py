@@ -377,8 +377,8 @@ def generalization_guard(transcript: str, extracted: dict) -> list[dict]:
     cases = _load_golden_cases()
 
     # 1. Transcript too short / empty
-    if len(transcript.strip()) < 10:
-        errors.append({"error_type": "泛化", "field": "input", "reason": "输入文本过短，无法提取有效信息"})
+    if len(transcript.strip()) < 25:
+        errors.append({"error_type": "泛化", "field": "input", "reason": "输入文本过短（<25字），无法提取有效信息"})
 
     # 2. Output too similar to any single golden example (overfitting indicator)
     extracted_json = json.dumps(extracted, ensure_ascii=False, sort_keys=True)
